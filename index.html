@@ -119,7 +119,8 @@ const DEF={pin:"1234",kpin:"1111",rpin:"2222",tok:"9244108229:AAF7L-KTSYN31IBPUc
 let S=DEF;try{const x=localStorage.getItem("mcad_v36");if(x)S=Object.assign({},DEF,JSON.parse(x))}catch(e){}
 function save(){try{localStorage.setItem("mcad_v36",JSON.stringify(S))}catch(e){}}
 let cBr="Msana",cCat="All",cart=new Array(),del="Motorbike",fBr="Msana",fCat="Income",bmBr="Msana",bCard=new Array(),bHits=new Array(12),bCalled=new Array();
-function sendTg(id,txt){if(S.tok&&id)fetch("https://telegram.org"+S.tok+"/sendMessage",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:id,text:txt})}).catch(()=>{})}
+function sendTg(id,txt){if(S.tok&&id)fetch("https://api.telegram.org/bot"+S.tok+"/sendMessage?chat_id="+encodeURIComponent(id)+"&text="+encodeURIComponent(txt),{mode:"no-cors"}).catch(()=>{})}
+
 function bChat(b){return b==="Msana"?S.mchat:(b==="Cava"?S.cchat:(b==="Aser"?S.achat:S.dchat))}
 function notifyAll(c,t){sendTg(c,t);if(S.admin&&S.admin!==c)sendTg(S.admin,t)}
 function tab(t,b){document.querySelectorAll("section").forEach(x=>x.classList.add("hide"));document.getElementById("s-"+t).classList.remove("hide");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));if(b)b.classList.add("on");renderAll()}

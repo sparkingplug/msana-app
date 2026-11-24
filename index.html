@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Msana • Cava • Aser • Dolce</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1>Msana • Cava • Aser • Dolce</h1><span>Addis Ababa</span></header>
+<div class="wrap">
+  <section id="s-order">
+    <div class="card"><h3>1. Choose Location</h3><div class="chips" id="c-branch"></div><div class="chips" id="c-cat"></div><div id="c-menu"></div></div>
+    <div class="card">
+      <h3>2. Cart & Telegram Order</h3>
+      <div id="cart-box" style="font-size:13px;color:var(--mut);margin-bottom:8px">Cart is empty.</div>
+      <div class="row" style="margin-bottom:8px"><strong>Total:</strong><strong id="cart-tot">0 ETB</strong></div>
+      <input id="o-name" placeholder="Your Name"><input id="o-phone" type="tel" placeholder="Phone (0911223344)"><input id="o-tg" placeholder="Telegram @username (optional)">
+      <div class="chips" id="del-chips"><button type="button" class="chip on" onclick="setDel('Motorbike',this)">🏍️ Motorbike</button><button type="button" class="chip" onclick="setDel('Bicycle',this)">🚲 Bicycle</button><button type="button" class="chip" onclick="setDel('Pickup',this)">🛍️ Pickup</button></div>
+      <input id="o-loc" placeholder="Neighborhood / Landmark (e.g. Bole)">
+      <button type="button" class="btn tg" onclick="sendOrder()">✈️ Send Order via Telegram</button>
+    </div>
+  </section>
+  <section id="s-riders" class="hide"><div class="card"><h3>🏍️ Delivery Dispatch</h3><div id="r-list"></div></div></section>
+  <section id="s-game" class="hide"><div class="card" style="text-align:center"><h3>🎲 Waiting Game — Win Free Treats!</h3><p style="font-size:12px;color:var(--mut)">Reach 500 pts for a Free Dolce Pastry or Coffee!</p><div style="font-size:24px;font-weight:800;color:var(--pri);margin:10px 0"><span id="g-pts">100</span> Birr Points</div><div class="chips" style="justify-content:center"><button type="button" class="chip on" onclick="setBet(20,this)">Risk 20</button><button type="button" class="chip" onclick="setBet(50,this)">Risk 50</button><button type="button" class="chip" onclick="setBet(100,this)">Risk 100</button></div><div class="row" style="margin-top:10px"><button type="button" class="btn" onclick="play('HIGH')">🔥 High (6–10)</button><button type="button" class="btn acc" onclick="play('LOW')">❄️ Low (1–5)</button></div><p id="g-res" style="font-size:13px;font-weight:700;margin-top:12px"></p><button type="button" class="btn out sm" onclick="addPts()">+ Claim Free 50 Points</button></div></section>
+  <section id="s-promo" class="hide"><div class="card"><h3>📢 Live Specials</h3><div id="p-box" style="background:#fef3c7;padding:12px;border-radius:8px;font-size:13px;margin-bottom:10px"></div><button type="button" class="btn tg" onclick="shareBot()">✈️ Share Bot Invite on Telegram</button></div></section>
+  <section id="s-boss" class="hide">
+    <div id="b-lock" class="card" style="text-align:center"><h3>🔒 Boss Access Only</h3><p style="font-size:12px;color:var(--mut)">Enter 4-Digit PIN (Default: 1234)</p><input id="pin-in" type="password" maxlength="4" inputmode="numeric" placeholder="••••" style="text-align:center;font-size:20px;letter-spacing:8px"><button type="button" class="btn" onclick="unlock()">Unlock Boss Dashboard</button></div>
+    <div id="b-open" class="hide">
+      <div class="row" style="margin-bottom:10px"><strong>👑 Boss Control</strong><button type="button" class="btn red sm" onclick="lock()">🔒 Lock</button></div>
+      <div class="tabs"><button type="button" class="on" onclick="subTab('fin',this)">📊 Summary</button><button type="button" onclick="subTab('menu',this)">🍽️ Menu</button><button type="button" onclick="subTab('crm',this)">👥 Contacts</button><button type="button" onclick="subTab('set',this)">💾 Backup</button></div>
+      <div id="sub-fin">
+        <div class="card"><h3>⚡ Quick Tap Finance Input</h3><div class="chips" id="f-branch"></div><div class="chips" id="f-cat"></div><div class="chips"><button type="button" class="chip" onclick="qAmt(500)">+500</button><button type="button" class="chip" onclick="qAmt(1000)">+1,000</button><button type="button" class="chip" onclick="qAmt(5000)">+5,000</button><button type="button" class="chip" onclick="qAmt(10000)">+10,000</button><button type="button" class="chip" onclick="qAmt(50000)">+50,000</button><button type="button" class="chip" onclick="document.getElementById('f-amt').value=''">Clear</button></div><input id="f-amt" type="number" placeholder="Amount in ETB"><input id="f-note" placeholder="Note (e.g. Daily sales, Bole rent, Flour)"><button type="button" class="btn" onclick="saveFin()">💾 Save Entry</button></div>
+        <div class="card"><h3>👑 Empire Summary (ETB)</h3><div class="grid" id="emp-tot"></div><h3>📍 Separate Branch Profit & Costs</h3><div id="br-break"></div></div>
+        <div class="card"><h3>🧾 Recent Entries</h3><div id="led-list" style="font-size:12px"></div></div>
+      </div>
+      <div id="sub-menu" class="hide">
+        <div class="card"><h3>➕ Add Menu Item</h3><select id="m-br"><option>Msana</option><option>Cava</option><option>Aser</option><option>Dolce Bakery</option></select><input id="m-cat" placeholder="Category (Mains, Breakfast, Pastries, Drinks)"><input id="m-name" placeholder="Item Name"><div class="row"><input id="m-price" type="number" placeholder="Price (ETB)"><input id="m-disc" type="number" placeholder="Discount %" value="0"></div><button type="button" class="btn acc" onclick="addMenu()">+ Save Menu Item</button></div>
+        <div class="card"><h3>📋 Manage Menus & Discounts</h3><div class="chips" id="bm-filter"></div><div id="bm-list"></div></div>
+      </div>
+      <div id="sub-crm" class="hide">
+        <div class="card"><h3>➕ Save Customer Contact</h3><input id="u-name" placeholder="Customer Name"><input id="u-phone" type="tel" placeholder="Phone (0911223344)"><input id="u-tg" placeholder="Telegram @username (optional)"><input id="u-cred" type="number" placeholder="Loyalty Credit (ETB)" value="100"><button type="button" class="btn" onclick="addCust()">Save Contact</button></div>
+        <div class="card"><div class="row"><h3>🎁 Contacts (<span id="u-cnt">0</span>)</h3><button type="button" class="btn out sm" onclick="dlBackup()">⬇️ Backup</button></div><div id="u-list"></div></div>
+      </div>
+      <div id="sub-set" class="hide">
+        <div class="card"><h3>☁️ Backup to Phone or Google Drive</h3><button type="button" class="btn acc" onclick="dlBackup()">⬇️ Download Backup File (.json)</button><button type="button" class="btn tg" onclick="tgBackup()">✈️ Send Backup to Saved Messages</button><input type="file" accept=".json" onchange="upBackup(event)" style="margin-top:10px"></div>
+        <div class="card"><h3>📲 Order Dispatch & Bot Link</h3><input id="set-disp" placeholder="Dispatch Telegram @username (without @)"><input id="set-link" placeholder="https://t.me"><button type="button" class="btn" onclick="saveLinks()">Save Telegram Links</button></div>
+        <div class="card"><h3>📢 Update Promo & PIN</h3><textarea id="set-promo" rows="2"></textarea><button type="button" class="btn acc" onclick="savePromo()">Update Promo</button><input id="set-pin" type="password" maxlength="4" inputmode="numeric" placeholder="New 4-digit PIN" style="margin-top:10px"><button type="button" class="btn" onclick="savePin()">Change PIN</button></div>
+      </div>
+    </div>
+  </section>
+</div>
+<nav>
+  <button type="button" class="on" onclick="tab('order',this)"><span>🍽️</span>Order</button>
+  <button type="button" onclick="tab('riders',this)"><span>🏍️</span>Riders</button>
+  <button type="button" onclick="tab('game',this)"><span>🎲</span>Game</button>
+  <button type="button" onclick="tab('promo',this)"><span>📢</span>Promo</button>
+  <button type="button" onclick="tab('boss',this)"><span>👑</span>Boss</button>
+</nav>
+<script src="app.js"></script>
+</body>
+</html>

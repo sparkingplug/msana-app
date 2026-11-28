@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>ከች (Kech) • Addis Delivery</title>
+<link rel="stylesheet" href="https://unpkg.com"/>
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--pri:#1b4332;--acc:#d97706;--txt:#1f2937;--mut:#6b7280;--bdr:#e5e7eb;--red:#dc2626;--grn:#16a34a;--tg:#0088cc}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{margin:0;background:var(--bg);color:var(--txt);padding-bottom:80px}
+header{background:var(--pri);color:#fff;padding:13px 16px;position:sticky;top:0;z-index:900;display:flex;justify-content:space-between;align-items:center}
+header h1{margin:0;font-size:16px}
+header span{font-size:11px;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:12px}
+.wrap{padding:12px;max-width:540px;margin:auto}
+.card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid var(--bdr)}
+h3{margin:0 0 10px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{padding:7px 11px;border-radius:20px;border:1px solid var(--bdr);background:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.chip.acc.on{background:var(--acc);border-color:var(--acc)}
+.btn{width:100%;padding:11px;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;background:var(--pri);color:#fff;margin-top:6px}
+.btn.acc{background:var(--acc)}.btn.tg{background:var(--tg)}.btn.red{background:var(--red)}
+.btn.out{background:#fff;color:var(--txt);border:1px solid var(--bdr)}.btn.sm{padding:6px 10px;font-size:11px;width:auto;margin-top:0}
+input,select{width:100%;padding:10px;border:1px solid var(--bdr);border-radius:8px;font-size:13px;margin-bottom:8px;background:#fff}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.badge{font-size:10px;padding:2px 6px;border-radius:6px;background:#fef3c7;color:#92400e;font-weight:700}
+.map-box{height:210px;width:100%;border-radius:10px;border:1px solid var(--bdr);margin:8px 0;z-index:1;background:#e5e7eb}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--bdr);display:flex;z-index:900}
+nav button{flex:1;border:none;background:none;padding:9px 2px;font-size:10px;font-weight:600;color:var(--mut);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button.on{color:var(--pri)}
+.hide{display:none!important}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.box{background:#f9fafb;padding:10px;border-radius:8px;border:1px solid var(--bdr)}.box small{display:block;color:var(--mut);font-size:11px}
+.pos{color:var(--grn)}.neg{color:var(--red)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px}
+.tabs button{white-space:nowrap;padding:6px 12px;border-radius:8px;border:1px solid var(--bdr);background:#fff;font-size:12px;font-weight:600}
+.tabs button.on{background:var(--txt);color:#fff}
+.b-head,.bingo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:6px 0}
+.b-head div{background:var(--acc);color:#fff;padding:6px;border-radius:6px;font-weight:900;font-size:14px}
+.b-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid var(--bdr);border-radius:8px;font-weight:700;font-size:13px;background:#fff;cursor:pointer}
+.b-cell.hit{background:var(--pri);color:#fff}
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}
+.m-card{aspect-ratio:1;border-radius:10px;background:var(--pri);color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:800}
+.m-card.open{background:#fff;color:var(--txt);border:2px solid var(--acc)}
+.call-ball{display:inline-block;background:var(--pri);color:#fff;font-size:18px;font-weight:900;padding:7px 16px;border-radius:30px;margin:6px 0}
+</style>
+</head>
+<body>
+<header><h1>🚀 ከች (Kech)</h1><span id="db-stat">Addis • Live</span></header>
+<div class="wrap">
+  <section id="s-order">
+    <div class="card"><h3>1. Choose Category & Store</h3><div class="chips" id="c-cat-type"></div><div class="chips" id="c-branch"></div><div id="c-menu"></div></div>
+    <div class="card">
+      <h3>2. Drop Pin & Checkout</h3>
+      <div id="cart-box" style="font-size:13px;color:var(--mut);margin-bottom:8px">Cart is empty.</div>
+      <div class="row" style="margin-bottom:8px"><span>Delivery Fee: <strong>100 ETB</strong></span><strong>Total: <span id="cart-tot">0 ETB</span></strong></div>
+      <input id="o-name" placeholder="Your Name"><input id="o-phone" type="tel" placeholder="Phone (0911223344)">
+      <div class="chips" id="del-chips"><button type="button" class="chip on" onclick="setDel('Motorbike',this)">🏍️ Motorbike</button><button type="button" class="chip" onclick="setDel('Bicycle',this)">🚲 Bicycle</button><button type="button" class="chip" onclick="setDel('Car',this)">🚗 Car</button></div>
+      <select id="o-pay"><option value="Cash">💵 Cash on Delivery</option><option value="Telebirr">📱 Telebirr</option><option value="CBE Birr">🏦 CBE Birr</option></select>
+      <div class="row"><input id="o-loc" placeholder="Neighborhood / Tap Map Below" style="margin:0"><button type="button" class="btn sm acc" onclick="useMyGps()">📍 Fast GPS</button></div>
+      <div id="cust-map" class="map-box"></div>
+      <button type="button" class="btn tg" onclick="sendOrder()">✅ Confirm Order & Track Driver</button>
+    </div>
+    <div class="card" id="track-card">
+      <div class="row"><h3>🛰️ Animated Driver GPS Tracker</h3><span class="badge" id="trk-status">No Active Order</span></div>
+      <div id="trk-info" style="font-size:12px;color:var(--mut);margin-bottom:6px">Place an order to watch your driver glide live across Addis Ababa!</div>
+      <div id="trk-map" class="map-box"></div>
+    </div>
+  </section>
+  <section id="s-store" class="hide">
+    <div id="k-lock" class="card" style="text-align:center"><h3>🏪 Store & Restaurant Portal</h3><p style="font-size:12px;color:var(--mut)">Enter Store PIN (Default: 1111)</p><input id="k-pin" type="password" maxlength="4" inputmode="numeric" placeholder="••••" style="text-align:center;font-size:20px;letter-spacing:8px"><button type="button" class="btn" onclick="unlockRole('k')">Unlock Store</button></div>
+    <div id="k-open" class="hide"><div class="card"><div class="row"><h3>🛎️ Live Store Orders</h3><button type="button" class="btn red sm" onclick="lockRole('k')">🔒 Lock</button></div><div id="k-list"></div></div></div>
+  </section>
+
+  <section id="s-drivers" class="hide">
+    <div id="r-lock" class="card" style="text-align:center"><h3>🏍️ Approved Drivers Only</h3><p style="font-size:12px;color:var(--mut)">Enter Driver PIN (Default: 2222)</p><input id="r-pin" type="password" maxlength="4" inputmode="numeric" placeholder="••••" style="text-align:center;font-size:20px;letter-spacing:8px"><button type="button" class="btn" onclick="unlockRole('r')">Unlock Driver</button></div>
+    <div id="r-open" class="hide">
+      <div class="card"><div class="row"><strong>📡 Live GPS Broadcast</strong><button type="button" class="btn tg sm" id="gps-btn" onclick="toggleDriverGps()">🟢 Go Online (Stream GPS)</button><button type="button" class="btn red sm" onclick="lockRole('r')">🔒</button></div><p id="drv-gps-txt" style="font-size:11px;color:var(--mut);margin:6px 0 0">Offline — tap Go Online to share live GPS.</p></div>
+      <div class="card"><h3>🚨 Available Deliveries</h3><div id="r-list"></div></div>
+    </div>
+  </section>
+
+  <section id="s-game" class="hide">
+    <div class="card" style="text-align:center">
+      <div class="row"><strong>🎰 ከች Lottery Arcade</strong><span class="badge"><span id="g-pts">100</span> Birr Pts</span></div>
+      <div class="tabs" style="margin-top:8px"><button type="button" class="on" onclick="gTab('wheel',this)">🎡 Lottery Wheel</button><button type="button" onclick="gTab('bingo',this)">🎱 35-Ball Bingo</button><button type="button" class="g-mem-btn" onclick="gTab('mem',this)">🃏 7-Move Match</button><button type="button" class="btn out sm" onclick="addPts()">+50 Pts</button></div>
+      <div id="gm-wheel">
+        <h3>🎡 Addis Lottery Wheel</h3><p style="font-size:12px;color:var(--mut)">25 Pts per spin! Hit the rare Jackpot for +120 Pts or Free Macchiato.</p>
+        <div class="call-ball" id="wh-res">Tap Spin (25 Pts)!</div>
+        <button type="button" class="btn acc" onclick="spinWheel()">🎡 Spin Lottery (25 Pts)</button>
+      </div>
+      <div id="gm-bingo" class="hide">
+        <div class="call-ball" id="b-ball">Ready (35 Max)</div>
+        <div class="row"><button type="button" class="btn acc sm" onclick="newBingo()">🎟️ New Card (30 Pts)</button><button type="button" class="btn sm" onclick="callBall()">🎱 Draw Ball</button></div>
+        <div class="b-head"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>
+        <div class="bingo-grid" id="bingo-board"></div>
+        <button type="button" class="btn tg" onclick="claimBingo()">🏆 SHOUT BINGO! (+150 Pts)</button>
+        <div id="b-drawn" style="font-size:11px;color:var(--mut);margin-top:6px">Called: 0/35</div>
+      </div>
+      <div id="gm-mem" class="hide">
+        <h3>🃏 7-Move Pastry Challenge</h3><p style="font-size:12px;color:var(--mut)">20 Pts entry! Match all 6 pairs in 7 moves max to win +100 Pts. Moves: <strong id="mem-mv">0 / 7</strong></p>
+        <div class="mem-grid" id="mem-board"></div>
+        <button type="button" class="btn sm" onclick="initMem()">🔄 New Round (20 Pts)</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-boss" class="hide">
+    <div id="b-lock" class="card" style="text-align:center"><h3>👑 Middleman Boss Control</h3><p style="font-size:12px;color:var(--mut)">Boss PIN (Default: 1234)</p><input id="pin-in" type="password" maxlength="4" inputmode="numeric" placeholder="••••" style="text-align:center;font-size:20px;letter-spacing:8px"><button type="button" class="btn" onclick="unlockRole('b')">Unlock Boss</button></div>
+    <div id="b-open" class="hide">
+      <div class="row" style="margin-bottom:10px"><strong>👑 ከች Command Center</strong><button type="button" class="btn red sm" onclick="lockRole('b')">🔒 Lock</button></div>
+      <div class="tabs"><button type="button" class="on" onclick="subTab('radar',this)">🗺️ Fleet Radar</button><button type="button" onclick="subTab('fin',this)">📊 Ledger</button><button type="button" onclick="subTab('menu',this)">🏪 Stores</button><button type="button" onclick="subTab('frd',this)">🤝 Friends</button><button type="button" onclick="subTab('set',this)">⚙️ Supabase</button></div>
+      <div id="sub-radar"><div class="card"><h3>🛰️ Live Addis Fleet GPS Radar</h3><div id="boss-map" class="map-box" style="height:260px"></div><div id="fleet-list" style="font-size:12px"></div></div></div>
+      <div id="sub-fin" class="hide">
+        <div class="card"><h3>💰 Middleman Commission & Cashflow</h3><div class="grid" id="emp-tot"></div><input id="f-amt" type="number" placeholder="Amount (ETB)"><input id="f-note" placeholder="Note"><button type="button" class="btn" onclick="saveFin()">💾 Log Entry</button></div>
+        <div class="card"><h3>🧾 Recent Ledger</h3><div id="led-list" style="font-size:12px"></div></div>
+      </div>
+      <div id="sub-menu" class="hide">
+        <div class="card"><h3>➕ Add Store / Item</h3><select id="m-br"><option>Msana</option><option>Cava</option><option>Aser</option><option>Dolce Bakery</option><option>Bole Supermarket</option><option>Kenema Pharmacy</option><option>Parcel Express</option></select><select id="m-type"><option>Restaurant</option><option>Bakery</option><option>Grocery</option><option>Pharmacy</option><option>Retail</option><option>Parcel</option></select><input id="m-name" placeholder="Item / Service Name"><input id="m-price" type="number" placeholder="Price (ETB)"><button type="button" class="btn acc" onclick="addMenu()">+ Save Item</button></div>
+        <div class="card"><h3>📋 Active Catalog</h3><div id="bm-list"></div></div>
+      </div>
+      <div id="sub-frd" class="hide">
+        <div class="card"><h3>🤝 Confidential Friends Tracker</h3><input id="fr-name" placeholder="Friend Name"><input id="fr-tg" placeholder="Telegram Chat ID"><div class="row"><input id="fr-amt" type="number" placeholder="Amount (ETB)"><input id="fr-pen" type="number" placeholder="Late Penalty/Day" value="50"></div><input id="fr-due" type="date"><button type="button" class="btn" onclick="addFriend()">+ Save Plan</button></div>
+        <div class="card"><div class="row"><h3>📋 Balances</h3><button type="button" class="btn red sm" onclick="applyPenalties()">⚡ Apply Late Fees</button></div><div id="fr-list"></div></div>
+      </div>
+      <div id="sub-set" class="hide">
+        <div class="card"><h3>☁️ Supabase Cloud & Telegram</h3><input id="set-sburl" placeholder="Supabase Project URL"><input id="set-sbkey" placeholder="Supabase Publishable / anon Key"><input id="set-tok" placeholder="New Private Bot Token"><input id="set-admin" placeholder="Admin Group ID (-5392259678)"><button type="button" class="btn tg" onclick="saveLinks()">Save Cloud & Bot Keys</button></div>
+      </div>
+    </div>
+  </section>
+</div>
+<nav>
+  <button type="button" class="on" onclick="tab('order',this)"><span>🏪</span>Shop</button>
+  <button type="button" class="on" onclick="tab('store',this)"><span>🛎️</span>Store</button>
+  <button type="button" class="on" onclick="tab('drivers',this)"><span>🏍️</span>Drivers</button>
+  <button type="button" class="on" onclick="tab('game',this)"><span>🎰</span>Lottery</button>
+  <button type="button" class="on" onclick="tab('boss',this)"><span>👑</span>Boss</button>
+</nav>
+<script defer src="https://unpkg.com"></script>
+<script defer src="https://jsdelivr.net"></script>
+<script defer src="market.js?v=3"></script>
+<script defer src="games.js?v=3"></script>
+</body>
+</html>

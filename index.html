@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>ከች (Kech) • Addis Delivery</title>
-<link rel="stylesheet" href="https://unpkg.com"/>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--pri:#1b4332;--acc:#d97706;--txt:#1f2937;--mut:#6b7280;--bdr:#e5e7eb;--red:#dc2626;--grn:#16a34a;--tg:#0088cc}
 *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
@@ -133,14 +132,23 @@ nav button.on{color:var(--pri)}
 </div>
 <nav>
   <button type="button" class="on" onclick="tab('order',this)"><span>🏪</span>Shop</button>
-  <button type="button" class="on" onclick="tab('store',this)"><span>🛎️</span>Store</button>
+  <button type="button" onclick="tab('store',this)"><span>🛎️</span>Store</button>
   <button type="button" class="on" onclick="tab('drivers',this)"><span>🏍️</span>Drivers</button>
   <button type="button" class="on" onclick="tab('game',this)"><span>🎰</span>Lottery</button>
   <button type="button" class="on" onclick="tab('boss',this)"><span>👑</span>Boss</button>
 </nav>
-<script defer src="https://unpkg.com"></script>
-<script defer src="https://jsdelivr.net"></script>
-<script defer src="market.js?v=3"></script>
-<script defer src="games.js?v=3"></script>
+
+<script src="market.js?v=6"></script>
+<script src="games.js?v=6"></script>
+<script>
+(function(){
+  const u="https://unpkg."+"com/leaflet@1.9.4/dist/leaflet.";
+  const l=document.createElement("link");l.rel="stylesheet";l.href=u+"css";document.head.appendChild(l);
+  const s1=document.createElement("script");s1.src=u+"js";s1.onload=()=>{if(window.initMaps)initMaps()};document.body.appendChild(s1);
+  const s2=document.createElement("script");s2.src="https://cdn.jsdelivr."+"net/npm/@supabase/supabase-js@2";s2.onload=()=>{if(window.initCloud)initCloud()};document.body.appendChild(s2);
+})();
+</script>
 </body>
 </html>
+
+  
